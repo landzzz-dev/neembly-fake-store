@@ -1,11 +1,51 @@
 <template>
 	<v-app>
-		<v-app-bar>
-			<v-container class="d-flex align-center">
-				<v-toolbar-title>
-					<v-icon>mdi-store</v-icon>
-					Neembly Fake Store
-				</v-toolbar-title>
+		<v-app-bar density="prominent">
+			<v-container class="h-100 d-flex flex-column">
+				<div class="d-flex align-center ga-4" style="height: 100%;">
+					<v-toolbar-title>
+						<v-icon>mdi-store</v-icon>
+						Neembly Fake Store
+					</v-toolbar-title>
+				</div>
+				<div class="d-flex align-center ga-4 w-100">
+					<p style="white-space: nowrap;">Total Product(s): <strong>{{ store.productData.length }}</strong></p>
+					<div v-if="$vuetify.display.xs" class="d-flex align-center justify-end ga-4 w-100">
+						<v-btn icon size="small" class="bg-grey" v-tooltip="'Search Product'"> 
+							<v-icon size="x-large">mdi-magnify</v-icon>
+						</v-btn>
+						<v-btn @click="openAddEditDialog('Add', {})" icon size="small" class="bg-primary" v-tooltip="'Add Product'">
+							<v-icon size="x-large">mdi-plus</v-icon>
+						</v-btn>
+						<v-btn @click="modifyProduct = !modifyProduct" icon size="small" class="bg-warning" v-tooltip="'Modify Product'">
+							<v-icon size="x-large">mdi-pencil</v-icon>
+						</v-btn>
+					</div>
+					<div v-else class="d-flex align-center ga-4 w-100">
+						<v-text-field 
+							clearable
+							hide-details
+							class="flex-fill"
+							placeholder="Search Product..." 
+							prepend-inner-icon="mdi-magnify" 
+							v-model="search"
+						></v-text-field>
+						<v-btn
+							height="40"
+							class="bg-primary"
+							@click="openAddEditDialog('Add', {})" 
+						>
+							Add Product
+						</v-btn>
+						<v-btn 
+							height="40"
+							class="bg-warning"
+							@click="modifyProduct = !modifyProduct" 
+						>
+							Modify Product
+						</v-btn>
+					</div>
+				</div>
 			</v-container>
 		</v-app-bar>
 
@@ -18,34 +58,6 @@
 					</v-col>
 				</v-row>
 				<v-row v-else> 
-					<v-col :cols="$vuetify.display.xs ? 12 : 6">
-						<v-text-field 
-							clearable
-							hide-details 
-							placeholder="Search Product..." 
-							prepend-inner-icon="mdi-magnify" 
-							v-model="search"
-						></v-text-field>
-					</v-col>
-					<v-col :cols="$vuetify.display.xs ? 12 : 6" class="text-end">
-						<v-btn 
-							class="mr-2"
-							height="40" 
-							color="primary"
-							:width="$vuetify.display.xs ? '49%' : ''" 
-							@click="openAddEditDialog('Add', {})" 
-						>
-							Add Product
-						</v-btn>
-						<v-btn 
-							height="40" 
-							color="warning"
-							:width="$vuetify.display.xs ? '49%' : ''" 
-							@click="modifyProduct = !modifyProduct" 
-						>
-							Modify Product
-						</v-btn>
-					</v-col>
 					<v-col v-if="filteredProducts.length == 0" cols="12" class="text-center">No products available.</v-col>
 					<v-col 
 						v-else
@@ -83,7 +95,7 @@
 								<v-img eager cover height="200" width="200" :lazy-src="item.image" :src="item.image"></v-img>
 							</div>
 							<div class="pa-4">
-								<p class="text-truncate" style="font-weight: 550; font-size: large;">{{ item.title }}</p>
+								<p :title="item.title" class="text-truncate" style="font-weight: 550; font-size: large;">{{ item.title }}</p>
 								<p class="text-capitalize text-medium-emphasis">{{ item.category }}</p>
 								<p class="d-flex align-center ga-2">
 									<v-rating
