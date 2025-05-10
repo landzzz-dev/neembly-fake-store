@@ -1,0 +1,3 @@
+## NOTE
+
+If getting data having cors error reload the page...
