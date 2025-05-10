@@ -21,19 +21,20 @@
             </v-card>
         </v-dialog>
 
-        <SnackbarAlert 
-            :type="snackbarAlert.type"
-            :title="snackbarAlert.title"
-            :text="snackbarAlert.text"
-            v-model="snackabar"
-        ></SnackbarAlert>
+        <CustomAlert 
+            :type="alertObject.type"
+            :title="alertObject.title"
+            :text="alertObject.text"
+            v-model="alert"
+        ></CustomAlert>
     </div>
 </template>
 
 <script setup>
-import { useStore } from '@/plugins/store';
 import { ref } from 'vue';
-import SnackbarAlert from './SnackbarAlert.vue';
+import { storeToRefs } from 'pinia';
+import { useStore } from '@/plugins/store';
+import CustomAlert from './custom/CustomAlert.vue';
 
 const model = defineModel();
 const props = defineProps({
@@ -41,20 +42,21 @@ const props = defineProps({
 });
 
 const store = useStore();
+const { productData } = storeToRefs(store);
 
-const snackabar = ref(false);
-const snackbarAlert = ref({
+const alert = ref(false);
+const alertObject = ref({
     type: '',
     title: '',
     text: '',
 });
 
 const deleteProduct = async (id) => {
-    const index = store.productData.findIndex((item) => item.id == id);
-    store.productData.splice(index, 1);
+    const index = productData.value.findIndex((item) => item.id === id);
+    productData.value.splice(index, 1);
     model.value = false;
-    snackabar.value = true;
-    snackbarAlert.value = {
+    alert.value = true;
+    alertObject.value = {
         type: 'success',
         title: props.items.title,
         text: 'Successfully deleted'
