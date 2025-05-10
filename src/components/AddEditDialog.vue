@@ -97,10 +97,10 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, defineAsyncComponent, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useStore } from '@/plugins/store';
-import CustomAlert from '@/components/custom/CustomAlert.vue';
+const CustomAlert = defineAsyncComponent(() => import('@/components/custom/CustomAlert.vue'));
 
 const addEditDialog = defineModel();
 const props = defineProps({

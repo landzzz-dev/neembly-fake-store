@@ -178,10 +178,10 @@
 <script setup>
 import { onMounted, ref, reactive, computed, watchEffect, defineAsyncComponent } from 'vue';
 import { useDisplay } from 'vuetify';
-import { useStore } from './plugins/store.js';
-import SearchDialog from './components/SearchDialog.vue';
-const AddEditDialog = defineAsyncComponent(() => import('./components/AddEditDialog.vue'));
-import DeleteDialog from './components/DeleteDialog.vue';
+import { useStore } from '@/plugins/store';
+const SearchDialog = defineAsyncComponent(() => import('@/components/SearchDialog.vue'));
+const AddEditDialog = defineAsyncComponent(() => import('@/components/AddEditDialog.vue'));
+const DeleteDialog = defineAsyncComponent(() => import('@/components/DeleteDialog.vue'));
 
 const store = useStore();
 const { name } = useDisplay();
